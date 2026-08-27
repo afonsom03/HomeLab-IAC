@@ -25,6 +25,10 @@ jobs:
           terraform init
           terraform apply -auto-approve
 
-      - name: 4. Ansible (Configuração e AD Join)
+- name: 4. Ansible (Configuração e AD Join)
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: False
         run: |
+          echo "A aguardar 1 minuto para as VMs iniciarem o serviço SSH..."
+          sleep 60
           ansible-playbook -i hosts.ini ad_join.yml
