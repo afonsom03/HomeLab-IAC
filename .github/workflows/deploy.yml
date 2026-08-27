@@ -1,0 +1,30 @@
+name: Homelab IaC Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Aprovisionar Infraestrutura
+    runs-on: self-hosted # Isto diz ao GitHub para enviar o trabalho para o teu WSL!
+
+    steps:
+      - name: 1. Fazer o Checkout do Código
+        uses: actions/checkout@v4
+
+      - name: 2. Injetar Segredos do Cofre
+        run: |
+          echo 'vm_password = "${{ secrets.VM_PASSWORD }}"' > secrets.auto.tfvars
+          echo 'proxmox_api_token = "${{ secrets.PROXMOX_TOKEN }}"' >> secrets.auto.tfvars
+          echo 'domain_password: "${{ secrets.AD_PASSWORD }}"' > ansible_secrets.yml
+
+      - name: 3. Terraform (Init e Apply)
+        run: |
+          terraform init
+          terraform apply -auto-approve
+
+      - name: 4. Ansible (Configuração e AD Join)
+        run: |
+          ansible-playbook -i hosts.ini ad_join.yml
