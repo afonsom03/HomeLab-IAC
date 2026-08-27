@@ -1,0 +1,58 @@
+---
+- name: Juntar Servidores Linux ao Active Directory
+  hosts: linux_servers
+  become: yes
+
+  vars_files:
+    - ansible_secrets.yml
+
+  vars:
+    # --- ALTERA ESTAS VARIAVEIS PARA O TEU AMBIENTE ---
+    domain_name: "homelab.local"             # O nome do teu Dominio
+    domain_admin: "Administrator"            # O teu utilizador Administrador
+    dc_ip: "10.10.0.1"                       # O IP do teu DC01
+    # --------------------------------------------------
+
+  tasks:
+    - name: 1. Instalar pacotes necessarios para o Active Directory (Samba, SSSD, Realmd)
+      apt:
+        name:
+          - realmd
+          - sssd
+          - sssd-tools
+          - libnss-sss
+          - libpam-sss
+          - adcli
+          - samba-common-bin
+          - oddjob
+          - oddjob-mkhomedir
+          - packagekit
+        state: present
+        update_cache: yes
+
+    - name: 2. Apontar o DNS do Linux para o Domain Controller (DC01)
+      lineinfile:
+        path: /etc/systemd/resolved.conf
+        regexp: '^#?DNS='
+        line: 'DNS={{ dc_ip }}'
+      notify: restart_dns
+
+    - name: 3. Verificar se a maquina ja esta no Dominio
+      shell: realm list | grep "{{ domain_name }}"
+      register: ad_status
+      changed_when: false
+      ignore_errors: yes
+
+    - name: 4. Juntar a maquina ao Dominio (Realm Join)
+      shell: echo '{{ domain_password }}' | realm join -U {{ domain_admin }} {{ domain_name }}
+      when: ad_status.rc != 0
+
+    - name: 5. Criar automaticamente as diretorias /home para utilizadores do Windows
+      shell: bash -c "pam-auth-update --enable mkhomedir"
+      when: ad_status.rc != 0
+
+  handlers:
+    - name: restart_dns
+      systemd:
+        name: systemd-resolved
+        state: restarted

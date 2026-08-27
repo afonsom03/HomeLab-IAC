@@ -1,0 +1,14 @@
+# Ignorar ficheiros com variáveis secretas
+secrets.auto.tfvars
+
+# Ignorar o estado do Terraform (também pode conter informação sensível)
+terraform.tfstate
+terraform.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+
+# Segredos do Ansible
+ansible_secrets.yml
+
+#Ficheiros dinamicos do Ansible
+hosts.ini
