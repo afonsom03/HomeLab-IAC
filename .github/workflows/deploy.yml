@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     name: Aprovisionar Infraestrutura
-    runs-on: self-hosted # Isto diz ao GitHub para enviar o trabalho para o teu WSL!
+    runs-on: self-hosted
 
     steps:
       - name: 1. Fazer o Checkout do Código
@@ -25,10 +25,10 @@ jobs:
           terraform init
           terraform apply -auto-approve
 
-- name: 4. Ansible (Configuração e AD Join)
+      - name: 4. Ansible (Configuração e AD Join)
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
         run: |
-          echo "A aguardar 1 minuto para as VMs iniciarem o serviço SSH..."
+          echo "A aguardar 60 segundos para as VMs iniciarem o serviço SSH..."
           sleep 60
           ansible-playbook -i hosts.ini ad_join.yml
