@@ -68,7 +68,8 @@ resource "proxmox_virtual_environment_vm" "ubuntu_server" {
 
       keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILYHZ2QV/o8NVmw0NonNNzLuo4zQ9dCvHqIjlQZ3BIQL afons@Martins_Desktop",
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICe2l2+7K0HxqrkYk5lQbhDlxawzyxck0OkD3r+Qj7Ug user@DESKTOP-DTC7V07"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICe2l2+7K0HxqrkYk5lQbhDlxawzyxck0OkD3r+Qj7Ug user@DESKTOP-DTC7V07",
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKgbmvIAvyHM4S1QEjaxZGyV924pG6Hwvp5ZP8T3YbED afonso.martins003@gmail.com"
       ]
     }
   }
