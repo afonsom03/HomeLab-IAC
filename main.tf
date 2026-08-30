@@ -73,6 +73,12 @@ resource "proxmox_virtual_environment_vm" "ubuntu_server" {
       ]
     }
   }
+  # Proteção contra destruição acidental por causa do Cloud-Init
+  lifecycle {
+    ignore_changes = [
+      initialization,
+    ]
+  }
 }
 
 # Gerar o Inventário diretamente na pasta do Ansible no Linux!
