@@ -21,6 +21,8 @@ jobs:
           echo 'domain_password: "${{ secrets.AD_PASSWORD }}"' > ansible_secrets.yml
 
       - name: 3. Terraform (Init e Apply)
+        env:
+          TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
         run: |
           terraform init
           terraform apply -auto-approve

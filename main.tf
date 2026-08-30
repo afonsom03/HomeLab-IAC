@@ -1,4 +1,10 @@
 terraform {
+  cloud {
+    organization = "NOME_DA_TUA_ORGANIZACAO_AQUI"
+    workspaces {
+      name = "homelab-iac"
+    }
+  }
   required_providers {
     proxmox = {
       source  = "bpg/proxmox"
