@@ -1,6 +1,6 @@
 terraform {
   cloud {
-    organization = "HomeLab-IAC"
+    organization = "HOMELAB-IAC"
     workspaces {
       name = "homelab-iac"
     }
