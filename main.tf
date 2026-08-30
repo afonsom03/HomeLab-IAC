@@ -88,7 +88,7 @@ resource "local_file" "ansible_inventory" {
   content  = <<-EOT
     [linux_servers]
     %{ for vm in proxmox_virtual_environment_vm.ubuntu_server ~}
-    ${vm.ipv4_addresses[1][0]} ansible_user=sysadmin
+    ${try(vm.ipv4_addresses[1][0], "IP_PENDENTE")} ansible_user=sysadmin
     %{ endfor ~}
   EOT
 }
