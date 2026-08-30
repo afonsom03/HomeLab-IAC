@@ -1,8 +1,8 @@
 terraform {
   cloud {
-    organization = "HOMELAB-IAC"
+    organization = "HomeLab_Afonso"
     workspaces {
-      name = "homelab-iac"
+      name = "HomeLab-IAC"
     }
   }
   required_providers {
