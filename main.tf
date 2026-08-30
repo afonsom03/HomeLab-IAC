@@ -23,7 +23,7 @@ provider "proxmox" {
 
 # A TUA MÁQUINA VIRTUAL
 resource "proxmox_virtual_environment_vm" "ubuntu_server" {
-  count       = 3
+  count       = 4
   name        = "ubuntu-iac-0${count.index + 1}"
   description = "Clone automático do Template 9000"
   node_name   = "pve" 
